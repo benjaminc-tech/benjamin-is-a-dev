@@ -61,9 +61,5 @@ export const projects: Project[] = [
 
 export const elsewhere = [
   { label: "github", href: "https://github.com/benjaminc-tech" },
-  // Fill these in, or delete the ones you do not want public.
-  { label: "x", href: "https://x.com/" },
-  { label: "linkedin", href: "https://www.linkedin.com/" },
-  { label: "instagram", href: "https://instagram.com/" },
   { label: "email", href: "mailto:benjamincgoldberger@gmail.com" },
 ];
