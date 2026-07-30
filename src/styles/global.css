@@ -255,6 +255,10 @@ h2 .count { color: var(--ink-soft); font-weight: 400; letter-spacing: 0.05em; }
 .portrait {
   flex: 0 0 auto;
   width: 200px;
+  /* height:auto is load-bearing: the width/height attributes are presentational
+     hints, so without this the height="440" attribute wins and aspect-ratio
+     never applies. */
+  height: auto;
   border: var(--rule-w) solid var(--rule);
   box-shadow: 8px 8px 0 var(--red);
   display: block;
