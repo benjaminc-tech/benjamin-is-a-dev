@@ -49,15 +49,6 @@ export const projects: Project[] = [
     tone: "var(--red-text)",
   },
   {
-    name: "Middle Pillar Tutorial",
-    blurb:
-      "An interactive walkthrough of a nine-step Golden Dawn ritual. Not monetised, not trying to be. I just wanted it to exist.",
-    href: "https://benjaminc-tech.github.io/middle-pillar-tutorial",
-    meta: "live · free",
-    accent: "var(--yellow)",
-    tone: "var(--yellow-text)",
-  },
-  {
     name: "Numerology Calculator",
     blurb:
       "Does the arithmetic that numerology sites bury under three screens of preamble. Loads instantly, asks for nothing.",
