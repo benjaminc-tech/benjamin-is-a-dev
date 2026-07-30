@@ -12,12 +12,25 @@ import { elsewhere } from "../data/projects";
 
   <h1>About</h1>
 
-  <div class="prose">
+  <div class="bio-head">
+    <img
+      class="portrait"
+      src="/ben.jpg"
+      srcset="/ben.jpg 440w, /ben@2x.jpg 880w"
+      sizes="(max-width: 620px) 160px, 200px"
+      width="440"
+      height="440"
+      alt="Benjamin Goldberger"
+      loading="eager"
+      decoding="async"
+    />
     <p class="lede">
       I am an indie developer. I build small software products, put them online, and run
       them myself.
     </p>
+  </div>
 
+  <div class="prose">
     <p>
       That means the whole job, not the fun part of it. The code, yes, but also the pricing
       page, the refund emails, the analytics that say nobody came, and the slow work of

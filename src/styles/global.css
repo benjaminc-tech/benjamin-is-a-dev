@@ -243,6 +243,32 @@ h2 .count { color: var(--ink-soft); font-weight: 400; letter-spacing: 0.05em; }
 .prose table { width: 100%; border-collapse: collapse; }
 .table-scroll { overflow-x: auto; }
 
+/* ---------- portrait ---------- */
+
+.bio-head {
+  display: flex;
+  gap: 1.75rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.portrait {
+  flex: 0 0 auto;
+  width: 200px;
+  border: var(--rule-w) solid var(--rule);
+  box-shadow: 8px 8px 0 var(--red);
+  display: block;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.bio-head .lede { margin-top: 0; }
+
+@media (max-width: 620px) {
+  .bio-head { flex-direction: column; gap: 1.25rem; }
+  .portrait { width: 160px; box-shadow: 6px 6px 0 var(--red); }
+}
+
 /* ---------- footer ---------- */
 
 footer {
