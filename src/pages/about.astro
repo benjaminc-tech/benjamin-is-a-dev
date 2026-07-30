@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+import { elsewhere } from "../data/projects";
+---
+
+<Base
+  title="About, Benjamin Goldberger"
+  description="Indie developer building and running small software products alone."
+  path="/about"
+>
+  <a class="back" href="/">← work</a>
+
+  <h1>About</h1>
+
+  <div class="prose">
+    <p class="lede">
+      I am an indie developer. I build small software products, put them online, and run
+      them myself.
+    </p>
+
+    <p>
+      That means the whole job, not the fun part of it. The code, yes, but also the pricing
+      page, the refund emails, the analytics that say nobody came, and the slow work of
+      figuring out why. I like that the loop is short and that nothing gets decided by a
+      committee.
+    </p>
+
+    <p>
+      The work splits roughly in two. Some of it is meant to earn: an AI coaching bot on
+      subscription, a QR generator sold once instead of rented forever, a print shop attached
+      to a content site. The rest exists because I wanted it to exist, which is its own good
+      reason. A ritual walkthrough. A reverse image search tool with an EXIF parser I wrote
+      from scratch, mostly to find out whether I could.
+    </p>
+
+    <h2>How I work</h2>
+
+    <p>
+      Small, cheap to run, and finished. I would rather ship a narrow thing that works than
+      keep a broad thing at ninety percent forever. Most of what I make is a static site and
+      a small backend, hosted for a few dollars a month, and that constraint has made the
+      work better rather than worse.
+    </p>
+
+    <p>
+      I use AI heavily and say so plainly. It changed which part of the job is hard: the
+      typing got cheap, and deciding what is actually true got expensive. So I spend the time
+      on the data model, the requirements, and checking the claims, because those are the
+      parts a model still does badly.
+    </p>
+
+    <h2>Elsewhere</h2>
+  </div>
+
+  <div class="links">
+    {elsewhere.map((l) => <a href={l.href} rel="noopener">{l.label}</a>)}
+  </div>
+</Base>

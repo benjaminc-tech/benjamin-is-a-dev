@@ -1,0 +1,70 @@
+---
+import Base from "../layouts/Base.astro";
+import { projects, elsewhere } from "../data/projects";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 4);
+
+const fmt = (d) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+---
+
+<Base
+  title="Benjamin Goldberger, builds and ships small software, solo"
+  description="Indie developer. AI coaching bots, productivity tools, and content-driven web products, built and run by one person."
+  path="/"
+>
+  <h1>I build small software<br />and actually ship it.</h1>
+
+  <p class="lede">
+    Indie developer, working alone. AI coaching bots, productivity tools, and content-driven
+    web products. I write the code, the copy, the pricing page, and the support emails.
+  </p>
+
+  <p class="sub">
+    Most of what I make is small on purpose: one person, low running costs, no funding, no team.
+    Some of it earns money. Some of it exists because I wanted it to exist. This page is both.
+  </p>
+
+  <h2>Work <span class="count">{projects.length} projects</span></h2>
+
+  <div class="grid">
+    {
+      projects.map((p) => (
+        <a class="card" href={p.href} style={`--accent:${p.accent};--tone:${p.tone}`} rel="noopener">
+          <h3>{p.name}</h3>
+          <p>{p.blurb}</p>
+          <span class="meta">{p.meta}</span>
+        </a>
+      ))
+    }
+  </div>
+
+  {
+    posts.length > 0 && (
+      <Fragment>
+        <h2>
+          Writing <span class="count"><a href="/blog">all posts</a></span>
+        </h2>
+        <ul class="posts">
+          {posts.map((p) => (
+            <li>
+              <a href={`/blog/${p.id}/`}>
+                <span class="title">{p.data.title}</span>
+                <span class="date">{fmt(p.data.date)}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Fragment>
+    )
+  }
+
+  <h2>Elsewhere</h2>
+  <div class="links">
+    {elsewhere.map((l) => <a href={l.href} rel="noopener">{l.label}</a>)}
+  </div>
+</Base>

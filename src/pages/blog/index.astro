@@ -1,0 +1,40 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+---
+
+<Base
+  title="Writing, Benjamin Goldberger"
+  description="Notes on building and shipping small software alone."
+  path="/blog"
+>
+  <h1>Writing</h1>
+  <p class="lede">Notes on building small things alone, and what happens after they ship.</p>
+
+  {
+    posts.length === 0 ? (
+      <p class="sub">Nothing published yet.</p>
+    ) : (
+      <>
+        <h2>Posts <span class="count">{posts.length}</span></h2>
+        <ul class="posts">
+          {posts.map((p) => (
+            <li>
+              <a href={`/blog/${p.id}/`}>
+                <span class="title">{p.data.title}</span>
+                <span class="date">{fmt(p.data.date)}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+</Base>
