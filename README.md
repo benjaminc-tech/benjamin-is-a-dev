@@ -1,43 +1,64 @@
-# Astro Starter Kit: Minimal
+# benjamin.is-a.dev
+
+Source for my personal site: a short portfolio, an about page, and a blog.
+Live at **https://benjamin.is-a.dev**.
+
+Static Astro, no client-side framework, no external fonts or assets. Every page is
+plain HTML and CSS by the time it reaches the browser.
+
+## Running it
+
+Requires Node 22.12 or newer.
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev      # local dev server
+npm run build    # static build into dist/
+npm run preview  # serve the built site
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Layout
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+  pages/         index, about, blog index, blog/[...slug], rss.xml.js
+  layouts/       Base.astro, the shell every page uses
+  content/blog/  posts, as markdown
+  data/          projects.ts, the portfolio list
+  styles/        global.css
+public/          images and favicons
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### Writing a post
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Drop a markdown file in `src/content/blog/`. The frontmatter is validated by
+`src/content.config.ts`:
 
-Any static assets, like images, can be placed in the `public/` directory.
+```yaml
+---
+title: "Post title"
+date: 2026-08-01
+summary: "One or two lines, used in the list view and the RSS feed."
+draft: true
+---
+```
 
-## 🧞 Commands
+`draft: true` posts still build, but they are left out of the blog index, the home
+page, and the RSS feed. Flip it to `false` to publish.
 
-All commands are run from the root of the project, from a terminal:
+### Projects
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+The portfolio list is `src/data/projects.ts`, one typed entry per project, each with
+its own accent color.
 
-## 👀 Want to learn more?
+## Deploying
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Netlify, from the CLI. This repository is not connected to the Netlify site, so
+pushing here does not deploy anything:
+
+```sh
+npm run build
+netlify deploy --prod --dir=dist --site f7f28033-1d91-4cf1-95eb-d68a1aff57e7
+```
+
+The domain comes from [is-a.dev](https://is-a.dev), pointed at Netlify by CNAME.
