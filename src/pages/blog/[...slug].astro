@@ -14,7 +14,12 @@ const fmt = (d) =>
   d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 ---
 
-<Base title={`${post.data.title}, Benjamin Goldberger`} description={post.data.summary} path={`/blog/${post.id}/`}>
+<Base
+  title={`${post.data.title}, Benjamin Goldberger`}
+  description={post.data.summary}
+  path={`/blog/${post.id}/`}
+  noindex={post.data.draft}
+>
   <a class="back" href="/blog">← writing</a>
 
   <h1>{post.data.title}</h1>

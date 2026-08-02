@@ -1,7 +1,9 @@
 ---
 import "../styles/global.css";
 
-const { title, description, path = "/" } = Astro.props;
+// noindex: drafts still build so they can be previewed at a real URL, but they must never
+// be indexable. Without this a draft is a live, crawlable page (it happened once already).
+const { title, description, path = "/", noindex = false } = Astro.props;
 const site = "https://benjamin.is-a.dev";
 const url = new URL(path, site).href;
 
@@ -44,6 +46,7 @@ posthog.capture('outbound_click',{destination:a.href,link_text:(a.innerText||'')
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={url} />
 
     <meta property="og:type" content="website" />
