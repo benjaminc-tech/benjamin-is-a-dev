@@ -4,6 +4,29 @@ import "../styles/global.css";
 const { title, description, path = "/" } = Astro.props;
 const site = "https://benjamin.is-a.dev";
 const url = new URL(path, site).href;
+
+// Analytics, production builds only: a local dev server fires real events into the
+// shared PostHog project otherwise, which has polluted these numbers before.
+const analytics = import.meta.env.PROD;
+
+// Visit /#internal once on a device to keep it out of the stats, /#public to undo.
+const optOutJs = `(function(){try{
+if(location.hash==='#internal')localStorage.setItem('bg_internal','1');
+if(location.hash==='#public')localStorage.removeItem('bg_internal');
+if(localStorage.getItem('bg_internal')==='1')window.__BG_INTERNAL=true;
+}catch(e){}})();`;
+
+const posthogJs = `!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_C6ScWLnpP7LeHst7KxHdqyGAgUfC9n6eEE2fV9uM79yf',{api_host:'https://us.i.posthog.com',person_profiles:'identified_only'});
+if(window.__BG_INTERNAL)posthog.opt_out_capturing();`;
+
+// Which project or contact link a visitor actually leaves through.
+const outboundJs = `document.addEventListener('click',function(e){
+var a=e.target.closest&&e.target.closest('a[href^="http"],a[href^="mailto:"]');
+if(!a||typeof posthog==='undefined')return;
+if(a.hostname===location.hostname)return;
+posthog.capture('outbound_click',{destination:a.href,link_text:(a.innerText||'').trim().slice(0,60),page_path:location.pathname});
+});`;
 ---
 
 <!doctype html>
@@ -26,6 +49,16 @@ const url = new URL(path, site).href;
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0d0d'/%3E%3Crect x='4' y='4' width='24' height='4' fill='%23ff2d20'/%3E%3Ctext x='16' y='25' font-family='monospace' font-size='18' font-weight='bold' fill='%23faf7f2' text-anchor='middle'%3Eb%3C/text%3E%3C/svg%3E"
     />
+
+    {
+      analytics && (
+        <Fragment>
+          <script is:inline set:html={optOutJs} />
+          <script is:inline set:html={posthogJs} />
+          <script is:inline set:html={outboundJs} />
+        </Fragment>
+      )
+    }
   </head>
 
   <body>
