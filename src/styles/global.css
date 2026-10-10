@@ -146,34 +146,49 @@ h2 .count { color: var(--ink-soft); font-weight: 400; letter-spacing: 0.05em; }
 
 .card {
   border: var(--rule-w) solid var(--rule);
-  padding: 1.1rem;
+  border-radius: 10px;
+  padding: 1.35rem 1.4rem;
   text-decoration: none;
   color: var(--ink);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
   position: relative;
-  background: var(--paper);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  /* One neutral card for every project. The per-project accent/tone in
+     projects.ts are no longer applied; the multicolor bars read as random. */
+  background: color-mix(in srgb, var(--ink) 3%, var(--paper));
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 }
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 6px;
-  background: var(--accent, var(--red));
+.card:hover, .card:focus-visible {
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 var(--rule);
+  border-color: var(--ink);
 }
-.card:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--rule); }
+.card:focus-visible { outline: 2px solid var(--blue-text); outline-offset: 3px; }
 
-.card h3 { margin: 0.4rem 0 0; font-size: 1rem; letter-spacing: -0.02em; }
-.card p { margin: 0; color: var(--ink-soft); font-size: 0.875rem; line-height: 1.5; }
+.card h3 { margin: 0; font-size: 1.15rem; line-height: 1.3; font-weight: 700; letter-spacing: -0.02em; padding-right: 1.6rem; }
+/* Arrow says "this goes somewhere". The "/ ''" alt text keeps it out of the accessible name. */
+.card h3::after {
+  content: "\2197";
+  content: "\2197" / "";
+  /* Pinned to the card corner, not floated: a float dropped onto its own line
+     under a long title and pushed that card's text out of step with its row. */
+  position: absolute;
+  top: 1.35rem; right: 1.4rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  transition: transform 0.12s ease, color 0.12s ease;
+}
+.card:hover h3::after, .card:focus-visible h3::after { color: var(--ink); transform: translate(2px, -2px); }
+.card p { margin: 0; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.55; }
 .card .meta {
   margin-top: auto;
-  padding-top: 0.6rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
+  padding-top: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--tone, var(--red-text));
+  color: var(--ink-soft);
 }
 
 /* ---------- post list ---------- */
@@ -197,15 +212,26 @@ h2 .count { color: var(--ink-soft); font-weight: 400; letter-spacing: 0.05em; }
 
 /* ---------- links row ---------- */
 
-.links { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 .links a {
-  border: var(--rule-w) solid var(--rule);
-  padding: 0.45rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.6rem 1.15rem;
+  border: var(--rule-w) solid var(--ink);
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--paper);
   text-decoration: none;
-  color: var(--ink);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.12s ease, color 0.12s ease;
 }
-.links a:hover { background: var(--ink); color: var(--paper); }
+.links a::after { content: "\2192"; content: "\2192" / ""; transition: transform 0.12s ease; }
+.links a:hover, .links a:focus-visible { background: var(--paper); color: var(--ink); }
+.links a:hover::after, .links a:focus-visible::after { transform: translateX(3px); }
+.links a:focus-visible { outline: 2px solid var(--blue-text); outline-offset: 3px; }
 
 /* ---------- prose (blog post body) ---------- */
 
@@ -261,7 +287,7 @@ h2 .count { color: var(--ink-soft); font-weight: 400; letter-spacing: 0.05em; }
      never applies. */
   height: auto;
   border: var(--rule-w) solid var(--rule);
-  box-shadow: 8px 8px 0 var(--red);
+  border-radius: 12px;
   display: block;
   aspect-ratio: 1;
   object-fit: cover;
@@ -271,7 +297,7 @@ h2 .count { color: var(--ink-soft); font-weight: 400; letter-spacing: 0.05em; }
 
 @media (max-width: 620px) {
   .bio-head { flex-direction: column; gap: 1.25rem; }
-  .portrait { width: 160px; box-shadow: 6px 6px 0 var(--red); }
+  .portrait { width: 160px; }
 }
 
 /* ---------- footer ---------- */
@@ -299,4 +325,7 @@ footer a { color: var(--ink-soft); }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
+  .card:hover, .card:focus-visible,
+  .card:hover h3::after, .card:focus-visible h3::after,
+  .links a:hover::after, .links a:focus-visible::after { transform: none; }
 }

@@ -1,11 +1,16 @@
 ---
 import "../styles/global.css";
+import { getCollection } from "astro:content";
 
 // noindex: drafts still build so they can be previewed at a real URL, but they must never
 // be indexable. Without this a draft is a live, crawlable page (it happened once already).
 const { title, description, path = "/", noindex = false } = Astro.props;
 const site = "https://benjamin.is-a.dev";
 const url = new URL(path, site).href;
+
+// Writing links (nav, footer rss, feed discovery) stay hidden until a non-draft post exists:
+// an empty blog reads as an abandoned site. /blog and /rss.xml still build either way.
+const hasPosts = (await getCollection("blog")).some((p) => !p.data.draft);
 
 // Analytics, production builds only: a local dev server fires real events into the
 // shared PostHog project otherwise, which has polluted these numbers before.
@@ -55,7 +60,7 @@ posthog.capture('outbound_click',{destination:a.href,link_text:(a.innerText||'')
     <meta property="og:url" content={url} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="alternate" type="application/rss+xml" title="Benjamin Goldberger" href="/rss.xml" />
+    {hasPosts && <link rel="alternate" type="application/rss+xml" title="Benjamin Goldberger" href="/rss.xml" />}
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0d0d'/%3E%3Crect x='4' y='4' width='24' height='4' fill='%23ff2d20'/%3E%3Ctext x='16' y='25' font-family='monospace' font-size='18' font-weight='bold' fill='%23faf7f2' text-anchor='middle'%3Eb%3C/text%3E%3C/svg%3E"
@@ -78,7 +83,7 @@ posthog.capture('outbound_click',{destination:a.href,link_text:(a.innerText||'')
         <a class="wordmark" href="/">benjamin<span class="dot">.</span>is-a.dev</a>
         <nav class="top">
           <a href="/" aria-current={path === "/" ? "page" : undefined}>work</a>
-          <a href="/blog" aria-current={path.startsWith("/blog") ? "page" : undefined}>writing</a>
+          {hasPosts && <a href="/blog" aria-current={path.startsWith("/blog") ? "page" : undefined}>writing</a>}
           <a href="/about" aria-current={path === "/about" ? "page" : undefined}>about</a>
         </nav>
       </div>
@@ -90,8 +95,8 @@ posthog.capture('outbound_click',{destination:a.href,link_text:(a.innerText||'')
       <footer>
         <span>Benjamin Goldberger</span>
         <span>
-          <a href="https://github.com/benjaminc-tech">github</a> ·
-          <a href="/rss.xml">rss</a>
+          <a href="https://github.com/benjaminc-tech">github</a>
+          {hasPosts && <Fragment> · <a href="/rss.xml">rss</a></Fragment>}
         </span>
       </footer>
     </main>
