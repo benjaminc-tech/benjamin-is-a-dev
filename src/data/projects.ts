@@ -33,7 +33,7 @@ export const projects: Project[] = [
   {
     name: "Eleven Eleven Paper Co",
     blurb:
-      "Angel numbers, written up properly, attached to a print shop. An experiment in whether good content can carry a small merch catalogue.",
+      "Angel numbers, written up properly, attached to a print shop. An experiment in whether good content can carry a small merch catalog.",
     href: "https://elevenelevenpaperco.com",
     meta: "live · content + merch",
     accent: "var(--purple)",
