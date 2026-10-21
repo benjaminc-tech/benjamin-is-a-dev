@@ -13,8 +13,9 @@
   --green: #34c759;    --green-text: #248a3d;
   --purple: #0071e3;   --purple-text: #0071e3;
 
-  --mono: "Monaco", "Menlo", "SF Mono", ui-monospace, "Cascadia Mono", monospace;
-  --ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --rule-w: 1px;
   --measure: 68ch;
 }
@@ -46,13 +47,17 @@
 
 * { box-sizing: border-box; }
 
+/* Type roles: display for headings and buttons, body for reading, mono only for short labels, dates and code. */
+h1, h2, h3, .wordmark, .posts .title, .links a { font-family: var(--font-display); }
+h2 .count, .card .meta, .posts .date, .sub time, .back, code { font-family: var(--font-mono); }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--ui);
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.65;
   overflow-x: hidden;
@@ -254,7 +259,7 @@ h2 .count { color: var(--ink-soft); font-weight: 400; letter-spacing: 0.05em; }
   color: var(--ink-soft);
 }
 .prose code {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 0.9em;
   background: color-mix(in srgb, var(--ink) 9%, transparent);
   padding: 0.1em 0.35em;
