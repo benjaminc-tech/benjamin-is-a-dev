@@ -49,6 +49,15 @@ export const projects: Project[] = [
     tone: "var(--red-text)",
   },
   {
+    name: "Used and Tested",
+    blurb:
+      "Reviews of the tools I actually run my products on, with the real bills, the mistakes, and who each one is not for.",
+    href: "https://usedandtested.com",
+    meta: "live · reviews",
+    accent: "var(--green)",
+    tone: "var(--green-text)",
+  },
+  {
     name: "Numerology Calculator",
     blurb:
       "Does the arithmetic that numerology sites bury under three screens of preamble. Loads instantly, asks for nothing.",
