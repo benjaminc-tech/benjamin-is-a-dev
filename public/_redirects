@@ -1,0 +1,2 @@
+# The netlify.app address served a duplicate copy that search engines indexed; send it to the real domain.
+https://benjamin-is-a-dev.netlify.app/* https://benjamin.is-a.dev/:splat 301!
